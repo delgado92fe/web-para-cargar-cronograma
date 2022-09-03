@@ -1,0 +1,230 @@
+body{
+	margin: 0;
+	padding: 8px;
+}
+body{
+		background: #eee;
+}
+.title{
+	background: linear-gradient(#BCFAF8,#52DFF9);
+	padding: 0;
+}
+h1{
+	padding: 16px;
+	text-align: center;
+	font-size: 50px;
+	font-style: italic;
+	color: #00a;
+}
+.gran{
+    height: 45vh;
+    margin-bottom: 10vh;
+    background:#caebe5;
+	display: grid;
+	grid-template-columns: 40% 60%;
+}
+.entrada{
+	display: grid;
+	background-color: #086d10;
+	height: 12vh;
+	width: 80%;
+}
+
+.stopandgo{
+	width: 90%;
+	height: 40vh;
+	border: solid 3px rgb(211, 12, 211);
+	background-color: rgb(61, 248, 70);
+	overflow: auto;
+}
+
+.muestra{
+	padding: 4px;
+	background-color: aquamarine;
+}
+
+/* CUADRO PARA CONTROL */
+.salida{
+    max-width: 80vh;
+    height: auto;
+	margin-top: 4px;
+    padding: 1px;
+	scroll-margin-right: 2px;
+	background: transparent;
+    border: solid 2px #065a4c;
+}
+.pSalida{
+    height: 10%;
+    margin: 0;
+    background: #006;
+	color: #eee;
+    text-align: center;
+}
+.contenedor{
+    height: 39vh;
+    width: auto;
+    overflow: auto;
+}
+.nombre{
+    height: 8vh;
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    margin-top: 2px;
+    border: solid 2px rgb(5, 70, 114);
+    background-color: rgb(65, 191, 241);
+    padding: 2px;
+}
+.dia{
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    font-size: 24px;
+    text-align: center;
+    color: #006;
+}
+.nombreFarm{
+    width: 100%;
+    height: 8vh;
+    margin: auto;
+    font-size: 4vh;
+    text-shadow: 2px 2px 2px #00a;
+    text-align: center;
+}
+.options button{
+    background: #86deee5e;
+    border: none;
+    margin: auto;
+    color: #000;
+}
+.imposible{
+    background: #86deee5e;
+    border: none;
+    margin: 4px 10px;
+    color: rgba(80, 79, 79, 0.26);
+    font-size: 12px;
+}
+.posible{
+    background: #2de0ecbd;
+    border: none;
+    margin: 4px 10px;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/*
+CRONOGRAMA PARA IMAGEN
+*/
+
+.cronogramaCompleto{
+	margin-top: 10vh;
+    margin-left: 4px;
+}
+.mes{
+    width: 100%;
+    height: 8vh;
+    margin: 0;
+    background:rgb(2, 149, 175);
+    color: #d9dadb;
+    text-align: center;
+    text-shadow: 4px 4px 5px#00a;
+    font-size: 6vh;
+    font-family: 'Lucida Sans';
+}
+.contenedorCronograma{
+    height: auto;
+    width: 100%;
+    padding: 0;
+}
+.cuadro{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+.cuadrito{
+    background: #a6e0ee;
+    height: 30px;
+    width: auto;
+    padding: 4px 0;
+    display: grid;
+    grid-template-columns: 10% 90%;
+    border: solid 2px #000;
+}
+/*.par{
+    border: solid 1px #000;
+    background-color: #fff;
+}
+.impar{
+    border: solid 1px #000;
+    background-color: #fff;
+}*/
+.izquierda{
+    display: inline-block;
+    width: 100%;
+    border: solid 1px rgb(0, 0, 0);
+}
+.derecha{
+    display: inline-block;
+    width: 100%;
+    border: solid 1px #000;
+}
+.fecha{
+    width: 70%;
+    height: 90%;
+	margin-top: -3px;
+    margin-left: 1px;
+    font-size: 3vh;
+    text-align: center;
+    background-color: #d9dadb;
+}
+.texto{
+    height: auto;
+    display: grid;
+    grid-template-rows: 60% 40%;
+    padding: 0;
+}
+.far{
+    font-size: 80%;
+    font-family: sans-serif;
+    margin-top: 0;
+    margin-bottom: -2px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+.dir{
+    font-size: 80%;
+    font-family: sans-serif;
+    margin-top: -3px;
+    margin-bottom: 1px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+.pieDeCronograma{
+    width: 100%;
+    height: 8vh;
+    margin: 0;
+    background:rgb(2, 149, 175);
+    color: #d9dadb;
+    text-align: center;
+    text-shadow: 4px 4px 5px#00a;
+    font-size: 6vh;
+    font-family: 'Lucida Sans';
+}
+
+/* PIE */
+
+.pie{
+    width: auto;
+    height: 14vh;
+    background-color: #52DFF9;
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+.textoQr{
+    font-family: Georgia;
+}
+.qr{
+    width: 90%;
+    height: 90%;
+
+}
