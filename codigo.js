@@ -1,322 +1,243 @@
-var ent = document.getElementById("entrada");
-var salida;
-let cont = 0;
-var grupo=[] ;
-var sale = document.getElementById('sale');//SALIDA AL P.PHP
-var tomafar; //TOMA EL NOMBRE DEL OBJETO Y PASA A SALIDA
-var direccionfarmacia; //TOMA DIRECCION Y PASA PARA ALMASENAR
-var direc;
-var mesH3 = document.querySelector(".mes");
 
-document.getElementById("cons").innerHTML = "ingrese un dato";
+//ELEMENTOS DEL CRONOGRAMA
 
-//LLAMAR FUNCION CLIC MEDIANTE ENTER
+const izquierdo = document.querySelector(".izquierdo");
+const derecho = document.querySelector(".derecho");
 
 
-//alert("solucionar estilo de salida. Este alert esta en la linea 16");
 
-//OBJETOS FARMACIA
-const expedito = { nombre: "SAN EXPEDITO",
-direccion: "B° San Nicolas frente al skate park"
-};
-
-const lourdesi ={ nombre: "LOURDES I",
-direccion: "B° centro 9 DE JULIO, plaza principal"};
-
-const lourdesii ={ nombre: "LOURDES II",
-direccion: "Av. Santa Rosa y 20 de Mayo"};
-
-const corazon = {nombre: "SAGRADO CORAZON",
-direccion: "B° Inmaculada 9 de Julio"};
-
-const centro = {nombre: " DEL CENTRO",
-direccion: "B° Centro 9 de Julio"};
-
-const nicolas = {nombre: "SAN NICOLAS",
-direccion: "25 de Mayo y San Martin"};
-
-const elena = {nombre: "SANTA ELENA",
-direccion: "B° Centro 25 de Mayo"};
-
-const figueroa = {nombre: "FIGUEROA",
-direccion: "B° centro 9 de Julio, pasando plaza principal"};
-
-//BASE DE DATOS
-const IDBRequest = indexedDB.open("database",1);
-
-IDBRequest.addEventListener("upgradeneeded",()=>{
-    const db = IDBRequest.result;
-    db.createObjectStore("farmacias",{
-        autoIncrement: true
-    })
-})
-
-IDBRequest.addEventListener("success",()=>{
-    console.log("todo salio correctamente");
-})
-
-IDBRequest.addEventListener("error",()=>{
-    console.log("Ocurrio un error")
-})
-
-//function paracargar la BD
-function ingresoDeDatos(){
-    let nombre = ent.value.toUpperCase()
-    if(nombre == "EXPEDITO" || nombre == "FIGUEROA" || nombre == "CORAZON" || nombre == "CENTRO" || nombre == "LOURDES I" || nombre == "LOURDES II" || nombre == "NICOLAS" || nombre == "ELENA"){
-        //SELECCIONAR QUE OBJETO ALMACENAR EN TOMAFAR
-        if(nombre == "EXPEDITO"){
-            tomafar = expedito.nombre;
-            direc = expedito.direccion;
-        }else if(nombre == "FIGUEROA"){
-            tomafar = figueroa.nombre;
-            direc = corazon.direccion;
-        }else if(nombre == "CORAZON"){
-            tomafar = corazon.nombre;
-            direc = corazon.direccion;
-        }else if(nombre == "CENTRO"){
-            tomafar = centro.nombre;
-            direc = centro.direccion;
-        }else if(nombre == "LOURDES I"){
-            tomafar = lourdesi.nombre;
-            direc = lourdesi.direccion;
-        }else if(nombre == "LOURDES II"){
-            tomafar = lourdesii.nombre;
-            direc = lourdesii.direccion;
-        }else if(nombre == "NICOLAS"){
-            tomafar = nicolas.nombre;
-            direc = nicolas.direccion;
-        }else if(nombre == "ELENA"){
-            tomafar = elena.nombre;
-            direc = elena.direccion;
-        }
-        if(document.queryCommandIndeterm(".posible") != undefined){
-            if(confirm("Hay elementos sin guardar ¿quieres continuar?")){
-                addObjeto({nombre});
-                leerObjetos();
-            }
-        }else{
-            addObjeto({nombre});
-            leerObjetos();
-        }
+//CLASE FARMACIA
+class farmacia {
+    constructor(nombre, direccion){
+        this.nombre = nombre;
+        this.direccion = direccion;
     }
 }
-
-//llamado de function ingresoDeDatos por boton enviar
-document.getElementById('add').addEventListener("click",(e)=>{
-    ingresoDeDatos();
-})
-//llamado de function ingresoDeDatos por enter
-ent.addEventListener('keypress', (e)=>{
-    if(e.keyCode === 13){
-        ingresoDeDatos();
-    }
-})
-
-//MOSTRAR lista
-const MostrarLista = document.getElementById("MostrarLista");
-MostrarLista.addEventListener('click', ()=>{
-    leerObjetos();
-});
-
-//FUNCIONES PARA DB
-function addObjeto(objeto) {
-    const IDBData = getIDBData("readwrite", "objeto agregado correctamente");
-    IDBData.add(objeto);
-}
-
-const leerObjetos = ()=>{
-    const IDBData = getIDBData("readonly");
-    const cursor = IDBData.openCursor();
-    const fragment = document.createDocumentFragment();
-    document.querySelector(".contenedor").innerHTML = "";
-    cursor.addEventListener("success",()=>{
-        if(cursor.result){
-            console.log(cursor.result.value);
-            let elemento = nombresHTML(cursor.result.key,cursor.result.value);
-            fragment.appendChild(elemento);
-            cursor.result.continue()
-    } else console.log("leidos todos los registros");
-    document.querySelector(".contenedor").appendChild(fragment);
-    })
-}
-
-const modificarObjeto = (key,objeto) =>{
-    const IDBData = getIDBData("readwrite","Objeto modificado  correctamente");
-    IDBData.put(objeto,key);
-    }
-const eliminarObjeto = key =>{
-    const IDBData = getIDBData("readwrite","objeto eliminado correctamente");
-    IDBData.delete(key);
-    }
-const getIDBData = (mode,msg) =>{
-    const db = IDBRequest.result;
-    const IDBtransaction = db.transaction("farmacias",mode);
-    const objectStore = IDBtransaction.objectStore("farmacias");
-    IDBtransaction.addEventListener("complete",()=>{
-        console.log(msg)
-    })
-    return objectStore;
-}
-
-//const contenedor =document.querySelector(".contenedor")
-
-const nombresHTML = (id,name) =>{
-    const container = document.createElement("DIV");
-    const nombreFarm = document.createElement("p");
-    const options = document.createElement("DIV");
-    const saveButton = document.createElement("button");
-    const dia = document.createElement("p");
+const EXPEDITO = new farmacia("SAN EXPEDITO","B° SAN NICOLAS FRENTE SKATE PARK");
+const LOURDESII = new farmacia("LOURDES II","B° ESTACION ESQUINA SANTA ROSA Y 20 DE MAYO");
+const LOURDESI = new farmacia("LOURDES I","B° CENTRO ESQUINA 9 DE JULIO Y SAN MARTIN");
+const NICOLAS = new farmacia("SAN NICOLAS","B° CENTRO ESQUINA 25 DE MAYO Y SAN MARTIN");
+const ELENA = new farmacia("SANTA ELENA","B° CENTRO ESQUINA 25 DE MAYO Y JOAQUIN V GONZALES");
+const CENTRO = new farmacia("DEL CENTRO","B° CENTRO CALLE 9 DE JULIO");
+const CORAZON = new farmacia("SAGRADO CORAZON","B° INMACULADA CALLE 9 DE JULIO");
 
 
-    dia.classList.add("dia");
-    nombreFarm.classList.add("nombreFarm");
-    container.classList.add("nombre");
-    options.classList.add("options");
-    saveButton.classList.add("imposible");
-
-    dia.textContent = id;
-    saveButton.textContent = "guardar";
-    nombreFarm.textContent = name.nombre;
-    nombreFarm.setAttribute("contenteditable","true");
-    nombreFarm.setAttribute("spellcheck","false");
-
-    options.appendChild(saveButton);
-
-    container.appendChild(dia);
-    container.appendChild(nombreFarm);
-    container.appendChild(options);
-
-    nombreFarm.addEventListener("keyup",()=>{
-        saveButton.classList.replace("imposible","posible")
-    })
-//MODIFICAR EL NOMBRE DE LA FARMACIA
-    saveButton.addEventListener("click",()=>{
-        alert("1° parte");
-            if(saveButton.classList == "posible"){
-                modificarObjeto(id,{nombre:nombreFarm.textContent})
-                saveButton.classList.replace("posible","imposible")
-            }
-        
-        alert("3°parte")
-    })
-
-
-    return container;
-}
-
-//DESCARGAR BASE PARA IMAGEN
-const descargarBase = ()=>{
-    const IDBData = getIDBData("readonly");
-    const cursor = IDBData.openCursor();
-    const fragment = document.createDocumentFragment();
-    document.querySelector(".contenedorCronograma").innerHTML = "";
-    cursor.addEventListener("success",()=>{
-        if(cursor.result){
-            console.log(cursor.result.value,cursor.result.key);
-            let element = farmaciaHTML(cursor.result.key,cursor.result.value);
-            fragment.appendChild(element);
-            cursor.result.continue()
-    } else console.log("leidos todos los registros");
-    document.querySelector(".contenedorCronograma").appendChild(fragment);
-    })
-}
-
-
-const guardar = document.getElementById("guardar");
-guardar.addEventListener('click', ()=>{
-    descargarBase();
-    alert("FUN CA")
-    
-})
-
-const izquierda = document.createElement("DIV");
-    const derecha = document.createElement("DIV");
-    izquierda.classList.add("izquierda");
-    derecha.classList.add("derecha");
-
-
-const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septimbre", "Octubre", "Noviembre", "Diciembre"];
+//MESES
+const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
 const d = new Date();
-let month = months[d.getMonth()];
+let año = d.getFullYear();
+let mestex = meses[d.getMonth()];
 let mes = d.getMonth();
 let salidaMes;
+let contadorDias
+console.log(d)
+console.log(año)
+console.log(mestex)
+console.log(mes)
 
-//SALIDA DE MES HE
-mesH3.innerHTML = month;
-
+let entradaMes = document.getElementById("entradaMes");
+let mesh3 = document.querySelector(".mesh3");
+//function seleccionado(){ arrayMes=entradaMes.value;}
 const cantidadDias = (mes) => {
-    let año = d.getFullYear();
-
-        let a= new Date(año, mes, 0).getDate();
-        let number = a/2;
-        salidaMes = parseInt(number);
-    return salidaMes;
+    //let a= new Date(año, mes, 0).getDate();
+    let number = mes/2;
+    salidaMes = parseInt(number);
+return salidaMes;
 }
 
-console.log(cantidadDias(mes));
-    //let año = d.getFullYear();
 
+let paraFor;
+let diaContador = document.getElementById("diaContador");
+let contDia=1;
+
+function aparecerCronograma(){
+    let cuadroEntradas = document.querySelector(".cuadroEntradas");
+    cuadroEntradas.classList.toggle('cuadroEntradasActivo');
+    let cambioEstilo = document.querySelector(".cronogramaCompleto");
+    cambioEstilo.classList.toggle('cronogramaCompletoOK')
+    let cuadroDia = document.querySelector('.cuadroDia');
+    cuadroDia.classList.toggle('cuadroDiaActivo')
+    let cuadroContadorDia = document.querySelector('.cuadroContadorDia');
+    cuadroContadorDia.classList.toggle('cuadroContadorDiaActivo')
+    return;
+}
+
+const mesComparar = (año,mes)=>{
+    return new Date(año, mes, 0).getDate();
+}
+const clickMes = document.getElementById("clickMes");
+clickMes.addEventListener("click",()=>{
+    aparecerCronograma()
+    diaContador.innerHTML = contDia;
+    var arrayMes;
+    let contador=0;
+    for(let i=0; i<13; i++){
+        contador++;
+        if(entradaMes.value == meses[i]){
+            arrayMes = contador;
+            break;
+        }
+    }
+    contadorDias = mesComparar( año, arrayMes);
+    console.log("contador dias: "+contadorDias);
+    mesh3.innerHTML=entradaMes.value;
+    paraFor = cantidadDias(contadorDias);
+    console.log("mitad de dias: "+paraFor);
+})
+
+function agregarFarmacias(){
+    let salidaFar="";
+    let salidaDirec="";
+
+    if(contDia <= contadorDias){
 
     
-    //return new Date(año, mes, 0).getDate();
+let arrayDeFarmacias=[];
+    let nombre = entradaFarmacia.value.toUpperCase()
+    if(nombre == "EXPEDITO" || nombre == "FIGUEROA" || nombre == "CORAZON" || nombre == "CENTRO" || nombre == "LOURDES I" || nombre == "LOURDES II" || nombre == "NICOLAS" || nombre == "ELENA"){
+        
+        arrayDeFarmacias[contDia]=nombre;
+        //CREAR ELEMENTOS
+        if(contDia <= paraFor){
+            const cuadrito = document.createElement("DIV");
+            cuadrito.classList.add("cuadrito");
+    //CUADRO DIAS
+            const dia = document.createElement("p");
+            dia.classList.add("par", "impar","fecha");
+    //TEXTO CON NOMBRE Y DIRECCION
+            const texto = document.createElement("DIV");
+            const far = document.createElement("p");
+            const dir = document.createElement("p");
+    //AGREGANDO CLASSESLIST
+            texto.classList.add("texto");
+            far.classList.add("far");
+            dir.classList.add("dir");
+    //AGREGANDO DATOS
+            dia.textContent = contDia;
+            switch(nombre){
+                case 'CORAZON':
+                salidaFar = CORAZON.nombre;
+                salidaDirec = CORAZON.direccion;
+                break;
+            case 'EXPEDITO':
+                salidaFar = EXPEDITO.nombre;
+                salidaDirec = EXPEDITO.direccion;
+                break;
+            case 'LOURDES II':
+                salidaFar = LOURDESII.nombre;
+                salidaDirec = LOURDESII.direccion;
+                break;
+            case 'LOURDES I':
+                salidaFar = LOURDESI.nombre;
+                salidaDirec = LOURDESI.direccion;
+                break;
+            case 'NICOLAS':
+                salidaFar = NICOLAS.nombre;
+                salidaDirec = NICOLAS.direccion;
+                break;
+            case 'CENTRO':
+                salidaFar = CENTRO.nombre;
+                salidaDirec = CENTRO.direccion;
+                break;
+            case 'ELENA':
+                salidaFar = ELENA.nombre;
+                salidaDirec = ELENA.direccion;
+                break;
+                default: alert('nombe no encontrado');
+            }
+            far.textContent=salidaFar;
+            dir.textContent=salidaDirec;
 
-//cantidadDias();
-//console.log(cantidadDias(1, 2022));
-
-
-//console.log(año);
-
-
-const cuadro = document.createElement("DIV");
-cuadro.classList.add("cuadro");
-//crear objetos html
-const farmaciaHTML = (id,nom) =>{
-    
-    const cuadrito = document.createElement("DIV");
-    const dia = document.createElement("p");
-    const fecha = document.createElement("DIV");
-    const texto = document.createElement("DIV");
-    const far = document.createElement("p");
-    const dir = document.createElement("p");
-    
-
-    cuadrito.classList.add("cuadrito");
-    dia.classList.add("par", "impar");
-    fecha.classList.add("fecha");
-    texto.classList.add("texto");
-    far.classList.add("far");
-    dir.classList.add("dir");
-
-    fecha.textContent = id;
-    far.textContent = nom.nombre;
-    dir.textContent ="DIRECCION";
-
-    fecha.appendChild(dia);
-    texto.appendChild(far);
-    texto.appendChild(dir);
-    cuadrito.appendChild(fecha);
-    cuadrito.appendChild(texto);
-    
-
-    if(id <= salidaMes){
-        derecha.appendChild(cuadrito);
+    //ARMANDO CUADRITO
+            texto.appendChild(far);
+            texto.appendChild(dir);
+            cuadrito.appendChild(dia)
+            cuadrito.appendChild(texto);
+            izquierdo.appendChild(cuadrito);
+        }else{
+            const cuadrito = document.createElement("DIV");
+            cuadrito.classList.add("cuadrito");
+    //CUADRO DIAS
+            const dia = document.createElement("p");
+            dia.classList.add("par", "impar","fecha");
+    //TEXTO CON NOMBRE Y DIRECCION
+            const texto = document.createElement("DIV");
+            const far = document.createElement("p");
+            const dir = document.createElement("p");
+    //AGREGANDO CLASSESLIST
+            texto.classList.add("texto");
+            far.classList.add("far");
+            dir.classList.add("dir");
+    //AGREGANDO DATOS
+            dia.textContent = contDia;
+            switch(nombre){
+                case 'CORAZON':
+                salidaFar = CORAZON.nombre;
+                salidaDirec = CORAZON.direccion;
+                break;
+            case 'EXPEDITO':
+                salidaFar = EXPEDITO.nombre;
+                salidaDirec = EXPEDITO.direccion;
+                break;
+            case 'LOURDES II':
+                salidaFar = LOURDESII.nombre;
+                salidaDirec = LOURDESII.direccion;
+                break;
+            case 'LOURDES I':
+                salidaFar = LOURDESI.nombre;
+                salidaDirec = LOURDESI.direccion;
+                break;
+            case 'NICOLAS':
+                salidaFar = NICOLAS.nombre;
+                salidaDirec = NICOLAS.direccion;
+                break;
+            case 'CENTRO':
+                salidaFar = CENTRO.nombre;
+                salidaDirec = CENTRO.direccion;
+                break;
+            case 'ELENA':
+                salidaFar = ELENA.nombre;
+                salidaDirec = ELENA.direccion;
+                break;
+                default: alert('nombe no encontrado');
+            }
+            far.textContent=salidaFar;
+            dir.textContent=salidaDirec;
+    //ARMANDO CUADRITO
+            texto.appendChild(far);
+            texto.appendChild(dir);
+            cuadrito.appendChild(dia)
+            cuadrito.appendChild(texto);
+            derecho.appendChild(cuadrito);
+        }
+        contDia++;
+        diaContador.innerHTML = contDia;
+        entradaFarmacia.value=null
     }else{
-        izquierda.appendChild(cuadrito);
+        alert("NOMBRE NO ENCONTRADO")
     }
     
-    cuadro.appendChild(derecha);
-    cuadro.appendChild(izquierda);
+}else{
+    let contenConfir = document.querySelector(".contenConfir");
+    contenConfir.classList.toggle('contenConfirActivo')
+    document.querySelector(".cuadroDia").disabled=false;
+    let ultimoDia = contDia;
+    ultimoDia --;
+    diaContador.innerHTML= ultimoDia;
+}
 
+}
 
-
-
-
-    return cuadro;
+var entradaFarmacia = document.getElementById("entradaFarmacia");
+document.getElementById("enviarFarmacia").addEventListener("click", (e)=>{
+    agregarFarmacias();
+})
+entradaFarmacia.addEventListener('keypress', (e)=>{
+    if(e.keyCode === 13){
+        agregarFarmacias();
     }
-
-
-
+})
 
 
 
