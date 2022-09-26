@@ -8,6 +8,7 @@
 	<meta name="autor" content="Franco Delgado">
 	<meta name="robots" content="index, aimogasta, farmacia, turno, rioja">
 	<meta charset="utf-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<link rel="icon" href="icon.jpg">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -19,6 +20,7 @@
 
 <div class="title">
 	<h1>CARGAR </h1>
+	<p id="pruebajsphp"></p>
 </div>
 
 <div class="gran">
@@ -28,26 +30,26 @@
 		<div class="cuadroEntradas">
 			<div class="cuadroContadorDia">
 				<p class="pDia">DIA</p>
-				<p id="diaContador"></p>
+				<p name='' id="diaContador"></p>
 			</div>
-			<div class="cuadroDia" disabled="">
-				<input type="text" id="entradaFarmacia" placeholder="Nombre de la farmacia">
-				<input id="enviarFarmacia" type="submit">
-			</div>
+			<form id="formulario" action="datos.php" class="cuadroDia" method="post">
+				<input type="text" name="nombre" id="entradaFarmacia" placeholder="Nombre de la farmacia">
+				<button id="enviarFarmacia" type="button">enviar</button>
+			</form>
 			<div class="cuadroMes">
 				<select onchange="seleccionado()" id="entradaMes">
-					<option value="Enero">Enero</option>
-					<option value="Febrero">Febrero</option>
-					<option value="Marzo">Marzo</option>
-					<option value="Abril">Abril</option>
-					<option value="Mayo">Mayo</option>
-					<option value="Junio">Junio</option>
-					<option value="Julio">Julio</option>
-					<option value="Agosto">Agosto</option>
-					<option value="Septiembre">Septiembre</option>
-					<option value="Octubre">Octubre</option>
-					<option value="Noviembre">Noviembre</option>
-					<option value="Diciembre">Diciembre</option>
+					<option value="enero">enero</option>
+					<option value="febrero">febrero</option>
+					<option value="marzo">marzo</option>
+					<option value="abril">abril</option>
+					<option value="mayo">mayo</option>
+					<option value="junio">junio</option>
+					<option value="julio">julio</option>
+					<option value="agosto">agosto</option>
+					<option value="septiembre">septiembre</option>
+					<option value="octubre">octubre</option>
+					<option value="noviembre">noviembre</option>
+					<option value="diciembre">diciembre</option>
 				</select>
 				<input id="clickMes" type="submit" value="Seleccionar">
 			</div>

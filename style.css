@@ -107,6 +107,9 @@ h1{
 /*
 CONFIRMAR
 */
+.enviarNull{
+    display: none;
+}
 .contenConfir{
     display: none;
 }

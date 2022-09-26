@@ -1,4 +1,3 @@
-
 //ELEMENTOS DEL CRONOGRAMA
 
 const izquierdo = document.querySelector(".izquierdo");
@@ -23,7 +22,7 @@ const CORAZON = new farmacia("SAGRADO CORAZON","B° INMACULADA CALLE 9 DE JULIO"
 
 
 //MESES
-const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
 const d = new Date();
 let año = d.getFullYear();
@@ -66,8 +65,19 @@ function aparecerCronograma(){
 const mesComparar = (año,mes)=>{
     return new Date(año, mes, 0).getDate();
 }
+
+let jsAphp = function (datito){
+    $(document).ready(function(){
+        let vari = datito;
+$('#pruebajsphp').load("datos.php",{varijs:vari})
+    })
+}
+
+//CLICK MES
 const clickMes = document.getElementById("clickMes");
 clickMes.addEventListener("click",()=>{
+
+    jsAphp(entradaMes.value);
     aparecerCronograma()
     diaContador.innerHTML = contDia;
     var arrayMes;
@@ -84,19 +94,33 @@ clickMes.addEventListener("click",()=>{
     mesh3.innerHTML=entradaMes.value;
     paraFor = cantidadDias(contadorDias);
     console.log("mitad de dias: "+paraFor);
+   // jsAphp(entradaMes.value);
 })
 
+
+
+//FUNCION AGREGAR FARRMACIAS
 function agregarFarmacias(){
     let salidaFar="";
     let salidaDirec="";
+    
+    //jsAphp(contDia);linea 69
 
     if(contDia <= contadorDias){
-
-    
-let arrayDeFarmacias=[];
+       // enviophp(contDia);
+    let arrayDeFarmacias=[];
     let nombre = entradaFarmacia.value.toUpperCase()
     if(nombre == "EXPEDITO" || nombre == "FIGUEROA" || nombre == "CORAZON" || nombre == "CENTRO" || nombre == "LOURDES I" || nombre == "LOURDES II" || nombre == "NICOLAS" || nombre == "ELENA"){
         
+        $.ajax({
+            url: "datos.php",
+            type: "post",
+            data: $("#formulario").serialize(),
+            success: function(resultado){
+                console.log(resultado);
+            }
+        })
+
         arrayDeFarmacias[contDia]=nombre;
         //CREAR ELEMENTOS
         if(contDia <= paraFor){
@@ -213,36 +237,35 @@ let arrayDeFarmacias=[];
         }
         contDia++;
         diaContador.innerHTML = contDia;
-        entradaFarmacia.value=null
+        entradaFarmacia.value=null;
+        
     }else{
         alert("NOMBRE NO ENCONTRADO")
     }
     
-}else{
-    let contenConfir = document.querySelector(".contenConfir");
-    contenConfir.classList.toggle('contenConfirActivo')
-    document.querySelector(".cuadroDia").disabled=false;
-    let ultimoDia = contDia;
-    ultimoDia --;
-    diaContador.innerHTML= ultimoDia;
-}
-
+    }else{
+        
+    }
+    if(contDia == contadorDias){
+        
+        document.querySelector(".cuadroDia").disabled=false;
+        cuadroDia.classList.toggle('cuadroDia');
+        
+    }
 }
 
 var entradaFarmacia = document.getElementById("entradaFarmacia");
 document.getElementById("enviarFarmacia").addEventListener("click", (e)=>{
     agregarFarmacias();
 })
+
+
+
 entradaFarmacia.addEventListener('keypress', (e)=>{
     if(e.keyCode === 13){
         agregarFarmacias();
     }
 })
-
-
-
-
-
 
 
 
